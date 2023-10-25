@@ -1,6 +1,7 @@
 data/
-.Rproj.user
+.Rproj.user/
 
 .Rhistory
 
-!data/week04/
+/data/*
+!/data/week04/
