@@ -1,0 +1,6 @@
+"0",""
+"0","joined_data <- shape %>% "
+"0","  clean_names(.) %>%"
+"0","  left_join(., "
+"0","            county_only_above_below_state,"
+"0","            by = c(""countylabe"" = ""county""))"
