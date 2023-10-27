@@ -137,6 +137,7 @@ gghist <- ggplot(CandaCitiesTemp_long, aes(x = Month, y = Temperature, color = S
        y = "Temperature (°C)") +
   theme_minimal()
 gghist
+
 # hist plot
 gghist_2 <- ggplot(CanadaTempDif, aes(x = Jan)) +
   geom_histogram()
