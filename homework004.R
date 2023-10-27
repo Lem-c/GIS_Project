@@ -19,5 +19,15 @@ GenderInequality <- read_excel(here("data/week04", "HDR21-22_Statistical_Annex_G
                             sheet= 1,
                             na = c("..", " ", "na", "NA", "NULL", "null"))
 
+# Table beautify
+# Delete top 2 rows !Run once only
+GenderInequality <- GenderInequality[-c(1:7),-c(6:ncol(GenderInequality))]
+# Change the col name of the table
+names(GenderInequality) <- c("id", "country", "value_2021", " ", "rank_2021")
+GenderInequality <- select(GenderInequality, -4)
+GenderInequality <- GenderInequality %>%
+  drop_na(value_2021)
 
-                            
+as.numeric(GenderInequality$value_2021)
+
+
