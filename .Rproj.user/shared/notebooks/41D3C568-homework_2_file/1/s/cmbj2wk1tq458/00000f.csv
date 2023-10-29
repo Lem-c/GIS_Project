@@ -1,6 +1,0 @@
-"0","# read"
-"0","report <- read_csv(here::here(""data"", "
-"0","                   ""Assessment1819.csv""),"
-"0","                              na= ""NULL"")"
-"2","错误: 'C:/Users/Mr.Lem/Desktop/data/Assessment1819.csv' does not exist.
-"

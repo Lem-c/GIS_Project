@@ -1,7 +1,0 @@
-"0","Datatypelist <- report %>% "
-"0","  summarise_all(class) %>%"
-"0","  pivot_longer(everything(), "
-"0","               names_to=""All_variables"", "
-"0","               values_to=""Variable_class"")"
-"0",""
-"0","Datatypelist"

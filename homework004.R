@@ -1,5 +1,6 @@
 library(sf)
 library(here)
+library(dplyr)
 # plot
 library(extrafont)
 library(ggplot2)
@@ -15,19 +16,54 @@ library(readxl)
 
 # Read in world city shape file and gender inequality data
 CountriesShape <- read_sf(here("data/week04", "World_Countries_Generalized/World_Countries_Generalized.shp"))
-GenderInequality <- read_excel(here("data/week04", "HDR21-22_Statistical_Annex_GII_Table.xlsx"),
+GenderInequality <- read_excel(here("data/week04", "HDR21-22_Statistical_Annex_HDI_Trends_Table.xlsx"),
                             sheet= 1,
                             na = c("..", " ", "na", "NA", "NULL", "null"))
 
 # Table beautify
+col_name = c("HDI_rank", "Country", "gen_1990", "N1","gen_2000", "N2", "gen_2010", "N3", "gen_2015"
+             , "N4", "gen_2018", "N5", "gen_2019", "N6", "gen_2020", "N7", "gen_2021")
 # Delete top 2 rows !Run once only
-GenderInequality <- GenderInequality[-c(1:7),-c(6:ncol(GenderInequality))]
+GenderInequality <- GenderInequality[-c(1:5),-c(17:ncol(GenderInequality))]
 # Change the col name of the table
-names(GenderInequality) <- c("id", "country", "value_2021", " ", "rank_2021")
-GenderInequality <- select(GenderInequality, -4)
+names(GenderInequality) <- col_name
+# Remove Na columns
 GenderInequality <- GenderInequality %>%
-  drop_na(value_2021)
-
-as.numeric(GenderInequality$value_2021)
+  select_if(~!all(is.na(.)))
 
 
+self.colSub <- function(table_, col_1, col_2, one=1, auto_crop=FALSE){
+  # table_: The table will be processed
+  # col_1: The first column
+  # col_2: The second column
+  # one: Used contain info column start index
+  # auto_crop: whether remove other not used columns
+  
+  out <- table_
+  
+  out <- out %>%
+    mutate(sub_dif = round(table_[[col_1]] - table_[[col_2]], digits = 3))
+  
+  
+  if(!auto_crop){
+    print("No crop")
+    return(out)
+  }
+  
+  out <- out %>%
+    select(., -all_of(c(one:ncol(out)-1)))
+    
+  return(out)
+}
+
+attr(self.colSub, "comment") <- "Apply subtraction to two specific columns and remove not used columns"
+
+# Make a difference between two target columns
+new <- self.colSub(GenderInequality, 6, 9, one = 4, auto_crop = TRUE) %>%
+  as.data.frame(new)
+
+# Join the difference value
+combined_out <- left_join(CountriesShape, new, by = c("COUNTRY" = "Country"))
+
+combined_out
+plot(combined_out)
