@@ -59,7 +59,7 @@ self.colSub <- function(table_, col_1, col_2, one=1, auto_crop=FALSE){
 attr(self.colSub, "comment") <- "Apply subtraction to two specific columns and remove not used columns"
 
 # Make a difference between two target columns
-new <- self.colSub(GenderInequality, 6, 9, one = 4, auto_crop = TRUE) %>%
+new <- self.colSub(GenderInequality, 9, 6, one = 4, auto_crop = TRUE) %>%
   as.data.frame(new)
 
 # Join the difference value
@@ -68,6 +68,5 @@ combined_out <- left_join(CountriesShape, new, by = c("COUNTRY" = "Country"))
 # filter(str_detect(A, B)
 
 tm_shape(combined_out) +
-  tm_borders() + 
-  tm_dots(col = "HDI_rank", palette = "-RdYlBu", border.col = "black", size = 0.5) +
-  tm_layout()
+  tm_polygons("sub_dif", palette = "-Blues", border.col = "gray30", title = "Value") +
+  tm_layout(frame = FALSE, legend.title.size = 1)
