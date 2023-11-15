@@ -63,7 +63,11 @@ new <- self.colSub(GenderInequality, 6, 9, one = 4, auto_crop = TRUE) %>%
   as.data.frame(new)
 
 # Join the difference value
+# Do not always join by the str column, error may happen
 combined_out <- left_join(CountriesShape, new, by = c("COUNTRY" = "Country"))
+# filter(str_detect(A, B)
 
-combined_out
-plot(combined_out)
+tm_shape(combined_out) +
+  tm_borders() + 
+  tm_dots(col = "HDI_rank", palette = "-RdYlBu", border.col = "black", size = 0.5) +
+  tm_layout()
